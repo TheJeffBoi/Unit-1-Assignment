@@ -14,7 +14,7 @@ public class PlayerScript : MonoBehaviour
     public float PlayerMovementSpeed, PlayerJumpHeight, PlayerSlidSpeed, rayLength;
     public int MaxJumps;
     private int jumps = 1;
-    private bool isGrounded, draw;
+    private bool isGrounded, attack;
     float bounceTime;
 
     // Start is called before the first frame update
@@ -25,7 +25,7 @@ public class PlayerScript : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         helper = gameObject.AddComponent<HelperScript>();
 
-        draw = false;
+        attack = false;
 
         bounceTime = 0;
     }
@@ -36,6 +36,7 @@ public class PlayerScript : MonoBehaviour
         PlayerMove();
         PlayerJump();
         DoGroundCheck();
+        Attack();
     }
 
     void PlayerMove()
@@ -44,9 +45,9 @@ public class PlayerScript : MonoBehaviour
         {
             bounceTime -= Time.deltaTime;
         }
-        else if (anim.GetBool("Jump") == true)
+        else if (attack == true)
         {
-
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
         else
         {
@@ -54,22 +55,21 @@ public class PlayerScript : MonoBehaviour
             if (Input.GetKey(KeyCode.A) || (Input.GetKey(KeyCode.LeftArrow) == true))
             {
                 rb.velocity = new Vector2(-PlayerMovementSpeed, rb.velocity.y);
-                anim.SetFloat("AnimState", 2);
+                anim.SetBool("Run", true);
                 sr.flipX = false;
             }
 
             else if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.RightArrow) == true))
             {
                 rb.velocity = new Vector2(PlayerMovementSpeed, rb.velocity.y);
-                anim.SetInt("AnimState", 2);
-                anim.set
+                anim.SetBool("Run", true);
                 sr.flipX = true;
             }
 
             else
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
-                anim.SetFloat("AnimState", 0);
+                anim.SetBool("Run", false);
             }
         }
     }
@@ -97,14 +97,35 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void Attack()
+    {
+        if (Input.GetKey(KeyCode.S) == true)
+        {
+            attack = true;
+            print("Attack Idle");
+            anim.SetBool("Attack Idle", true);
+        }
+        if (Input.GetKeyUp(KeyCode.S) == true)
+        {
+            anim.SetBool("Attack Idle", false);
+            anim.SetBool("Attack", true);
+        }
+    }
+
+    public void AttackFinished()
+    {
+        attack = false;
+        anim.SetBool("Attack", false);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
     {
         float px = transform.position.x;
         float py = transform.position.y;
         float ex = enemy.transform.position.x;
         float ey = enemy.transform.position.y;
 
-        if (collision.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy")
         {
             if (py > ey + 0.8)
             {
@@ -124,6 +145,11 @@ public class PlayerScript : MonoBehaviour
                     bounceTime = 0.3f;
                 }
             }
+        }
+
+        if (other.gameObject.tag == "Ground")
+        {
+            anim.SetBool("Jump", false);
         }
     }
 }
