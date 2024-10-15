@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
+using System;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -63,7 +64,10 @@ public class EnemyScript : MonoBehaviour
 
     void Attack()
     {
-        state = 1; // attack player then set state to 1 
+        System.Random randomDelay = new System.Random();
+        int attackDelay = randomDelay.Next(1, 3);
+        helper.Delay(attackDelay);
+        //state = 1; // attack player then set state to 1 
     }
 
     void FollowPlayer()

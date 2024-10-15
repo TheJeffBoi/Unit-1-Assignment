@@ -64,18 +64,15 @@ public class HelperScript : MonoBehaviour
         return offEdge;
     }
 
-    public bool Delay(float delayTime)
+    public void Delay(float delayTime)
     {
-        bool timeFinished = false;
 
         delay += Time.deltaTime;
 
-            if (delay > delayTime)
-            {
-                delay = 0;
-            }
+        if (delay > delayTime)
+        {
+            delay = 0;
 
-        timeFinished = true;
-        return timeFinished;
+        }
     }
 }
