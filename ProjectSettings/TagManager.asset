@@ -40,12 +40,33 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 129392197
+    locked: 0
+  - name: Background 2
+    uniqueID: 2181802877
+    locked: 0
+  - name: Decoration
+    uniqueID: 3810147605
+    locked: 0
+  - name: Decoration 2
+    uniqueID: 2277008943
+    locked: 0
+  - name: Decoration 3
+    uniqueID: 849516755
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Player
     uniqueID: 1590637861
     locked: 0
+  - name: Door
+    uniqueID: 3796490555
+    locked: 0
   - name: Ground
     uniqueID: 3528949439
+    locked: 0
+  - name: UI
+    uniqueID: 2448185161
     locked: 0
