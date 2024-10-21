@@ -14,12 +14,14 @@ public class PlayerScript : MonoBehaviour
     public float PlayerMovementSpeed, PlayerJumpHeight, PlayerSlidSpeed, rayLength;
     public int MaxJumps;
     private int jumps = 1;
-    private bool isGrounded, attack;
+    public bool isGrounded, attack, start;
     float bounceTime;
 
     // Start is called before the first frame update
     void Start()
     {
+        start = true;
+
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
@@ -33,54 +35,78 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PlayerStart();
         PlayerMove();
         PlayerJump();
         DoGroundCheck();
         Attack();
     }
 
+    void PlayerStart()
+    {
+        if (Input.anyKey == true && start == true)
+        {
+            anim.SetBool("OnFloor", true);
+            anim.SetBool("GetUp", true);
+        }
+    }
+
+    
+    public void StartEnd()
+    {
+        anim.SetBool("OnFloor", false);
+        start = false;
+        print("set start to false");
+    }
+
     void PlayerMove()
     {
-        if (bounceTime > 0)
+        if (start == false)
         {
-            bounceTime -= Time.deltaTime;
-        }
-        else if (attack == true)
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-        }
-        else
-        {
-
-            if (Input.GetKey(KeyCode.A) || (Input.GetKey(KeyCode.LeftArrow) == true))
+            if (bounceTime > 0)
             {
-                rb.velocity = new Vector2(-PlayerMovementSpeed, rb.velocity.y);
-                anim.SetBool("Run", true);
-                sr.flipX = false;
+                bounceTime -= Time.deltaTime;
             }
-
-            else if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.RightArrow) == true))
-            {
-                rb.velocity = new Vector2(PlayerMovementSpeed, rb.velocity.y);
-                anim.SetBool("Run", true);
-                sr.flipX = true;
-            }
-
-            else
+            else if (attack == true)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
-                anim.SetBool("Run", false);
+            }
+            else
+            {
+
+                if (Input.GetKey(KeyCode.A) || (Input.GetKey(KeyCode.LeftArrow) == true))
+                {
+                    rb.velocity = new Vector2(-PlayerMovementSpeed, rb.velocity.y);
+                    anim.SetBool("Run", true);
+                    sr.flipX = false;
+                }
+
+                else if (Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.RightArrow) == true))
+                {
+                    rb.velocity = new Vector2(PlayerMovementSpeed, rb.velocity.y);
+                    anim.SetBool("Run", true);
+                    sr.flipX = true;
+                }
+
+                else
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                    anim.SetBool("Run", false);
+                }
             }
         }
     }
 
     void PlayerJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) == true && isGrounded == true || (Input.GetKeyDown(KeyCode.Space) == true && jumps < MaxJumps))
+        if (start == false && attack == false)
         {
-            rb.AddForce(new Vector2(rb.velocity.x, PlayerJumpHeight), ForceMode2D.Impulse);
-            jumps++;
-            anim.SetBool("Jump", true);
+            if (Input.GetKeyDown(KeyCode.Space) == true && isGrounded == true || (Input.GetKeyDown(KeyCode.Space) == true && jumps < MaxJumps))
+            {
+                rb.AddForce(new Vector2(rb.velocity.x, PlayerJumpHeight), ForceMode2D.Impulse);
+                jumps++;
+                anim.SetBool("Jump", true);
+            }
         }
     }
 
@@ -101,8 +127,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.S) == true)
         {
-            attack = true;
-            print("Attack Idle");
+            attack = true; 
             anim.SetBool("Attack Idle", true);
         }
         if (Input.GetKeyUp(KeyCode.S) == true)
@@ -114,6 +139,7 @@ public class PlayerScript : MonoBehaviour
 
     public void AttackFinished()
     {
+        print("attack");
         attack = false;
         anim.SetBool("Attack", false);
     }

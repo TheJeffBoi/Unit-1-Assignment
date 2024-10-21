@@ -23,6 +23,7 @@ public class EnemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         helper = gameObject.AddComponent<HelperScript>();
         sr = GetComponent<SpriteRenderer>();
@@ -39,28 +40,26 @@ public class EnemyScript : MonoBehaviour
     {
         rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
 
-        State();
+        Patrol();
     }
 
-    void State()
+    /*void State()
     {
         if (state == 0)
         {
             Patrol(); //patrol code
-            print("Patrol");
         }
 
         if (state == 1)
         {
             FollowPlayer(); //follow code
-            print("Follow");
         }
 
         if (state == 2)
         {
             Attack(); //attack code
         }
-    }
+    }*/
 
     void Attack()
     {
@@ -71,7 +70,9 @@ public class EnemyScript : MonoBehaviour
     }
 
     void FollowPlayer()
-    { 
+    {
+        anim.SetBool("Run", true);
+
         if (playerNear == false)
         {
             state = 0;
@@ -106,16 +107,18 @@ public class EnemyScript : MonoBehaviour
         {
             if (moveSpeed < 0)
             {
-                if (helper.ExtendedRayEdgeCheck(-0.35f, 0, 0.75f) == false)
+                if (helper.ExtendedRayEdgeCheck(-0.35f, 0, 2f) == false)
                 {
                     moveSpeed = maxSpeed;
+                    sr.flipX = false;
                 }
             }
             else
             {
-                if (helper.ExtendedRayEdgeCheck(0.35f, 0, 0.75f) == false)
+                if (helper.ExtendedRayEdgeCheck(0.35f, 0, 2f) == false)
                 {
                     moveSpeed = -maxSpeed;
+                    sr.flipX = true;
                 }
             }
         // if player near set state to 1
