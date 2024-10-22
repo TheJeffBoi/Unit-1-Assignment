@@ -10,14 +10,14 @@ public class EnemyScript : MonoBehaviour
     Rigidbody2D rb;
     SpriteRenderer sr;
     HelperScript helper;
-    public float maxSpeed;
+    public float maxSpeed, rayLength;
 
 
     public GameObject player;
+    PlayerScript ps;
 
     private float moveSpeed;
-    private bool playerNear, playerHit;
-
+    private bool playerNear;
     int state;
 
     // Start is called before the first frame update
@@ -27,9 +27,9 @@ public class EnemyScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         helper = gameObject.AddComponent<HelperScript>();
         sr = GetComponent<SpriteRenderer>();
+        ps = player.gameObject.GetComponent<PlayerScript>();
 
         playerNear = false;
-        playerHit = false;
         moveSpeed = maxSpeed;
 
         state = 0; //0 = patrol, 1=follow, 2=attack
@@ -40,10 +40,10 @@ public class EnemyScript : MonoBehaviour
     {
         rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
 
-        Patrol();
+        State();
     }
 
-    /*void State()
+    void State()
     {
         if (state == 0)
         {
@@ -53,18 +53,13 @@ public class EnemyScript : MonoBehaviour
         if (state == 1)
         {
             FollowPlayer(); //follow code
-        }
-
-        if (state == 2)
-        {
-            Attack(); //attack code
-        }
-    }*/
+        }   
+    }
 
     void Attack()
     {
         System.Random randomDelay = new System.Random();
-        int attackDelay = randomDelay.Next(1, 3);
+        int attackDelay = randomDelay.Next(3, 5);
         helper.Delay(attackDelay);
         //state = 1; // attack player then set state to 1 
     }
@@ -85,14 +80,17 @@ public class EnemyScript : MonoBehaviour
 
             if (px < ex)
             {
-                print("moving left");
                 moveSpeed = -maxSpeed;
+                sr.flipX = true;
             }
-            else
+            else if (px > ex)
             {
-                print("moving right");
                 moveSpeed = +maxSpeed;
-
+                sr.flipX = false;
+            }
+            else if (px == ex)
+            {
+                sr.flipX = false;
             }
         }
     }
@@ -107,7 +105,7 @@ public class EnemyScript : MonoBehaviour
         {
             if (moveSpeed < 0)
             {
-                if (helper.ExtendedRayEdgeCheck(-0.35f, 0, 2f) == false)
+                if (helper.ExtendedRayEdgeCheck(-0.35f, 0, rayLength) == false)
                 {
                     moveSpeed = maxSpeed;
                     sr.flipX = false;
@@ -115,7 +113,7 @@ public class EnemyScript : MonoBehaviour
             }
             else
             {
-                if (helper.ExtendedRayEdgeCheck(0.35f, 0, 2f) == false)
+                if (helper.ExtendedRayEdgeCheck(0.35f, 0, rayLength) == false)
                 {
                     moveSpeed = -maxSpeed;
                     sr.flipX = true;
@@ -145,7 +143,7 @@ public class EnemyScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            playerHit = true;
+            ps.DoBounce();
         }
     }
 

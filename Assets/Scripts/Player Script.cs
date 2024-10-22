@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -9,12 +10,13 @@ public class PlayerScript : MonoBehaviour
     Rigidbody2D rb;
     SpriteRenderer sr;
     HelperScript helper;
+    HealthManager manager;
     public GameObject enemy;
 
     public float PlayerMovementSpeed, PlayerJumpHeight, PlayerSlidSpeed, rayLength;
     public int MaxJumps;
     private int jumps = 1;
-    public bool isGrounded, attack, start;
+    private bool isGrounded, attack, start;
     float bounceTime;
 
     // Start is called before the first frame update
@@ -26,6 +28,7 @@ public class PlayerScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         helper = gameObject.AddComponent<HelperScript>();
+        manager = gameObject.AddComponent<HealthManager>();
 
         attack = false;
 
@@ -56,7 +59,6 @@ public class PlayerScript : MonoBehaviour
     {
         anim.SetBool("OnFloor", false);
         start = false;
-        print("set start to false");
     }
 
     void PlayerMove()
@@ -144,38 +146,39 @@ public class PlayerScript : MonoBehaviour
         anim.SetBool("Attack", false);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public void DoBounce()
     {
         float px = transform.position.x;
         float py = transform.position.y;
         float ex = enemy.transform.position.x;
         float ey = enemy.transform.position.y;
 
-        if (other.gameObject.tag == "Enemy")
+        anim.SetBool("Hurt", true);
+        manager.TakeDamage(10);
+        print("Damage Taken");
+
+        if (py > ey + 0.8)
         {
-            if (py > ey + 0.8)
+            rb.AddForce(new Vector2(rb.velocity.x, 8), ForceMode2D.Impulse);
+            bounceTime = 0.3f;
+        }
+        else
+        {
+            if (px < ex)
             {
-                rb.AddForce(new Vector2(rb.velocity.x, 8), ForceMode2D.Impulse);
+                rb.AddForce(new Vector2(-8, rb.velocity.y), ForceMode2D.Impulse);
                 bounceTime = 0.3f;
             }
-            else
+            else if (px > ex)
             {
-                if (px < ex)
-                {
-                    rb.AddForce(new Vector2(-8, rb.velocity.y), ForceMode2D.Impulse);
-                    bounceTime = 0.3f;
-                }
-                else if (px > ex)
-                {
-                    rb.AddForce(new Vector2(8, rb.velocity.y), ForceMode2D.Impulse);
-                    bounceTime = 0.3f;
-                }
+                rb.AddForce(new Vector2(8, rb.velocity.y), ForceMode2D.Impulse);
+                bounceTime = 0.3f;
             }
         }
+    }
 
-        if (other.gameObject.tag == "Ground")
-        {
-            anim.SetBool("Jump", false);
-        }
+    public void DamageEnd()
+    {
+        anim.SetBool("Hurt", false);
     }
 }
