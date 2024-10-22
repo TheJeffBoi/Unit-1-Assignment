@@ -67,7 +67,7 @@ MonoBehaviour:
     width: 2560
     height: 1357
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Hierarchy
   m_RootView: {fileID: 8}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -267,7 +267,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 184
+  controlID: 113
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 102
+  controlID: 114
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -626,9 +626,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: ce720000
-      m_LastClickedID: 0
-      m_ExpandedIDs: a4f0ffff60f1ffff1af2ffffcef2ffff82f3ffff36f4ffffeaf4ffff9ef5ffff52f6ffff06f7ffffbaf7ffff6ef8ffffa6faffff
+      m_SelectedIDs: 50f7ffff
+      m_LastClickedID: -2224
+      m_ExpandedIDs: 50f7ffff04f8ffffb8f8ffff12fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1128,9 +1128,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 4799.5317, y: 168.73256, z: -49.032303}
+    m_Target: {x: 7308.769, y: 2549.9058, z: -77.46052}
     speed: 2
-    m_Value: {x: 4591.332, y: 162.32121, z: -46.916573}
+    m_Value: {x: 7585.642, y: 2691.548, z: -81.11523}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1180,9 +1180,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 4913.222
+    m_Target: 7756.136
     speed: 2
-    m_Value: 4701.648
+    m_Value: 8121.6084
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1393,7 +1393,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1403,16 +1403,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Tommy\Temp\Unit-1-Assignment
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 63}
-    m_SelectedIDs: c67c0000
-    m_LastClickedID: 31942
-    m_ExpandedIDs: 00000000207b000000ca9a3bffffff7f
+    m_SelectedIDs: 107b0000
+    m_LastClickedID: 31504
+    m_ExpandedIDs: 00000000107b000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1440,7 +1440,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000207b0000
+    m_ExpandedIDs: 00000000107b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
